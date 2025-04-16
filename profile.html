@@ -613,6 +613,13 @@ sidebarBtn.addEventListener("click", ()=>{
 
     const user = await supabase.auth.getUser();
 
+    const { data: { session } } = await supabase.auth.getSession();
+
+if (!session) {
+  window.location.href = 'login.html';
+}
+
+
 async function updateProfile(e) {
   e.preventDefault();
   const fullName = document.getElementById('name').value;
