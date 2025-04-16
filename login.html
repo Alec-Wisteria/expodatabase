@@ -253,6 +253,7 @@ input {
 			<input type="text" id="registerUsername" placeholder="Name" required/>
 			<input type="email" id="registerEmail" placeholder="Email" required/>
 			<input type="password" id="registerPassword" placeholder="Password" required/>
+			<input type="password" id="confirmPassword" name="Confirm Password" required>
 			<button type="submit">Sign Up</button>
 		</form>
 	</div>
@@ -320,14 +321,16 @@ document.getElementById('loginForm').addEventListener('submit', async (e) => {
 });
 </script>
 <script type="module">
-	
+
 import { signUpUser } from './supabaseClient.js';
+
 // Sign Up
 document.getElementById('registerForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             const username = document.getElementById('registerUsername').value;
             const email = document.getElementById('registerEmail').value;
             const password = document.getElementById('registerPassword').value;
+			const confirmPassword = document.getElementById('ConfirmPassword').value;
 
             const success = await signUpUser(username, email, password);
             if (success) {
