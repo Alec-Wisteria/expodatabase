@@ -250,9 +250,9 @@ input {
 				<a href="#" class="social"><i class="fab fa-linkedin-in"></i></a>
 			</div>
 			<span>or use your email for registration</span>
-			<input type="text" id="registerUsername" placeholder="Name" />
-			<input type="email" id="registerEmail" placeholder="Email" />
-			<input type="password" id="registerPassword" placeholder="Password" />
+			<input type="text" id="registerUsername" placeholder="Name" required/>
+			<input type="email" id="registerEmail" placeholder="Email" required/>
+			<input type="password" id="registerPassword" placeholder="Password" required/>
 			<button type="submit">Sign Up</button>
 		</form>
 	</div>
@@ -302,8 +302,6 @@ input {
 </script>
 
 <script type="module">
-import { signInUser, signUpUser } from './supabaseClient.js';
-
 // Login
 import { signInUser } from './supabaseClient.js';
 
@@ -320,7 +318,10 @@ document.getElementById('loginForm').addEventListener('submit', async (e) => {
         alert('Login failed. Please check your credentials.');
     }
 });
-
+</script>
+<script type="module">
+	
+import { signUpUser } from './supabaseClient.js';
 // Sign Up
 document.getElementById('registerForm').addEventListener('submit', async (e) => {
             e.preventDefault();
@@ -328,7 +329,7 @@ document.getElementById('registerForm').addEventListener('submit', async (e) => 
             const email = document.getElementById('registerEmail').value;
             const password = document.getElementById('registerPassword').value;
 
-            const success = await signUpUser( username, email, password);
+            const success = await signUpUser(username, email, password);
             if (success) {
                 alert('User account created successfully!');
             } else {
