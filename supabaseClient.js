@@ -50,10 +50,16 @@ export async function signUpUser(username, email, password, confirmPassword) {
 
     console.log("User signed up successfully:", data);
 
+    // If user is null, wait until they confirm their email before inserting profile
+    if (!data.user) {
+        alert("Confirmation email sent. Please verify your email before signing in.");
+        return true;
+    }
+
     const { error: insertError } = await supabase
         .from('profiles')
         .insert([
-            { id: data.user.id, username: username, email: email}
+            { id: data.user.id, username: username, email: email }
         ]);
 
     if (insertError) {
@@ -64,6 +70,7 @@ export async function signUpUser(username, email, password, confirmPassword) {
     console.log("Data inserted into profiles table successfully");
     return true;
 }
+
 
 // Function to sign in a user and check if they exist in the profiles table
 export async function signInUser(email, password) {

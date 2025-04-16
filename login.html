@@ -266,8 +266,8 @@ input {
 				<a href="#" class="social"><i class="fab fa-linkedin-in"></i></a>
 			</div>
 			<span>or use your account</span>
-			<input type="email" id="loginEmail" placeholder="Email" />
-			<input type="password" id="loginPassword" placeholder="Password" />
+			<input type="email" id="loginEmail" placeholder="Email" required/>
+			<input type="password" id="loginPassword" placeholder="Password" required/>
 			<a href="#">Forgot your password?</a>
 			<button type="submit">Sign In</button>
 		</form>
@@ -287,7 +287,6 @@ input {
 		</div>
 	</div>
 </div>
-
 <script>
     const signUpButton = document.getElementById('signUp');
     const signInButton = document.getElementById('signIn');
@@ -301,7 +300,6 @@ input {
         container.classList.remove("right-panel-active");
     });
 </script>
-
 <script type="module">
 // Login
 import { signInUser } from './supabaseClient.js';
@@ -335,6 +333,7 @@ document.getElementById('registerForm').addEventListener('submit', async (e) => 
             const success = await signUpUser(username, email, password, confirmPassword);
             if (success) {
                 alert('User account created successfully!');
+				windows.location.href = 'index.html';
             } else {
                 alert('Registration failed. Please try again.');
             }
