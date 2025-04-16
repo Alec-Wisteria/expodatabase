@@ -238,6 +238,7 @@ input {
 	background: #f2eee3;
 }
 </style>
+
 <body>
 <div class="container" id="container">
 	<div class="form-container sign-up-container">
@@ -252,11 +253,11 @@ input {
 			<input type="text" id="registerUsername" placeholder="Name" />
 			<input type="email" id="registerEmail" placeholder="Email" />
 			<input type="password" id="registerPassword" placeholder="Password" />
-			<button type="button" onclick="signUp()">Sign Up</button>
+			<button type="submit">Sign Up</button>
 		</form>
 	</div>
 	<div class="form-container sign-in-container">
-		<form id="loginForm"> 
+		<form id="loginForm">
 			<h1>Sign in</h1>
 			<div class="social-container">
 				<a href="#" class="social"><i class="fab fa-facebook-f"></i></a>
@@ -267,7 +268,7 @@ input {
 			<input type="email" id="loginEmail" placeholder="Email" />
 			<input type="password" id="loginPassword" placeholder="Password" />
 			<a href="#">Forgot your password?</a>
-			<button type="button" onclick="signIn()">Sign In</button>
+			<button type="submit">Sign In</button>
 		</form>
 	</div>
 	<div class="overlay-container">
@@ -288,21 +289,22 @@ input {
 
 <script>
     const signUpButton = document.getElementById('signUp');
-const signInButton = document.getElementById('signIn');
-const container = document.getElementById('container');
+    const signInButton = document.getElementById('signIn');
+    const container = document.getElementById('container');
 
-signUpButton.addEventListener('click', () => {
-	container.classList.add("right-panel-active");
-});
+    signUpButton.addEventListener('click', () => {
+        container.classList.add("right-panel-active");
+    });
 
-signInButton.addEventListener('click', () => {
-	container.classList.remove("right-panel-active");
-});
+    signInButton.addEventListener('click', () => {
+        container.classList.remove("right-panel-active");
+    });
 </script>
-<script>
-import { signInUser } from './supabaseClient.js';
 
-//Login
+<script type="module">
+import { signInUser, signUpUser } from './supabaseClient.js';
+
+// Login
 document.getElementById('loginForm').addEventListener('submit', async (e) => {
     e.preventDefault();
     const email = document.getElementById('loginEmail').value;
@@ -317,24 +319,23 @@ document.getElementById('loginForm').addEventListener('submit', async (e) => {
     }
 });
 
-//Sign up
-
+// Sign Up
 document.getElementById('registerForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const username = document.getElementById('registerUsername').value;
-            const email = document.getElementById('registerEmail').value;
-            const password = document.getElementById('registerPassword').value;
+    e.preventDefault();
+    const username = document.getElementById('registerUsername').value;
+    const email = document.getElementById('registerEmail').value;
+    const password = document.getElementById('registerPassword').value;
 
-            const success = await signUpUser('buyer', username, email, password);
-            if (success) {
-                alert('User registered! Please check your email to confirm your account.');
-                // Redirect to login page or home page after successful registration
-                window.location.href = 'index.html';
-            } else {
-                alert('Registration failed. Please try again.');
-            }
-        });
+    const success = await signUpUser(username, email, password);
+    if (success) {
+        alert('User registered! Please check your email to confirm your account.');
+        window.location.href = 'index.html';
+    } else {
+        alert('Registration failed. Please try again.');
+    }
+});
 </script>
+
 </body>
 
 </html>

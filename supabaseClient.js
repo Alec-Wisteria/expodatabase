@@ -15,11 +15,6 @@ supabase.channel('public:profiles')
 
 // Function to sign up a user and insert data into profiles table
 export async function signUpUser(userType, username, email, password, confirmPassword) {
-    if (password !== confirmPassword) {
-        console.log("Passwords do not match");
-        return false;
-    }
-
     const { data, error } = await supabase.auth.signUp({
         email: email,
         password: password
@@ -46,6 +41,7 @@ export async function signUpUser(userType, username, email, password, confirmPas
     console.log("Data inserted into profiles table successfully");
     return true;
 }
+
 
 // Function to sign in a user and check if they exist in the profiles table
 export async function signInUser(email, password) {
