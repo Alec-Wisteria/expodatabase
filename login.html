@@ -333,7 +333,7 @@ document.getElementById('registerForm').addEventListener('submit', async (e) => 
             const success = await signUpUser(username, email, password, confirmPassword);
             if (success) {
                 alert('User account created successfully!');
-				windows.location.href = 'index.html';
+				container.classList.remove("right-panel-active");
             } else {
                 alert('Registration failed. Please try again.');
             }
