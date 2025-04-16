@@ -412,7 +412,6 @@ body{
           </div>
           <div class="name-job">
               <div class="profile_name" id="username"></div>
-              <div class="job" id="job"></div>
           </div>
           <!-- The logout icon now triggers the modal -->
           <i class='bx bx-log-out' onclick="showLogoutConfirmation()"></i>
@@ -468,64 +467,39 @@ sidebarBtn.addEventListener("click", ()=>{
   sidebar.classList.toggle("close");
 });
 </script>
-<script>
+<script type="module">
     import { supabase } from './supabaseClient.js';
 // Profile details elements
-const profileDetails = document.getElementById("profile-details");
-const usernameElement = document.getElementById("username");
-const jobElement = document.getElementById("job");
-
-// Fetch user profile details
-async function loadProfile() {
-  const user = supabase.auth.user();
+document.addEventListener('DOMContentLoaded', async () => {
+  const { data: { user } } = await supabase.auth.getUser();
 
   if (user) {
-    // Get the user profile from the 'profiles' table
-    const { data, error } = await supabase
+    // Fetch additional profile info if stored in a 'profiles' table
+    const { data: profile } = await supabase
       .from('profiles')
-      .select('username, job')
+      .select('*')
       .eq('id', user.id)
       .single();
 
-    if (error) {
-      console.error('Error fetching profile:', error);
-    } else {
-      // Update profile display
-      usernameElement.textContent = data.username;
-      jobElement.textContent = data.job;
-      profileDetails.style.display = 'flex';  // Show profile details
-    }
-  } else {
-    // If no user is logged in, hide the profile section
-    profileDetails.style.display = 'none';
-  }
-}
-
-// Handle logout
-async function logout() {
-  await supabase.auth.signOut();
-  loadProfile(); // Optionally update the profile after logout
-}
-
-// Show logout confirmation modal
-function showLogoutConfirmation() {
-  document.getElementById('logoutModal').style.display = 'block';
-}
-
-// Close the logout confirmation modal
-function closeLogoutModal() {
-  document.getElementById('logoutModal').style.display = 'none';
-}
-
-// Event listener for `storage` event to handle logout from other pages
-window.addEventListener("storage", function(event) {
-  if (event.key === "token" && event.newValue === null) {
-    loadProfile();  // Update profile if logged out from another tab
+    // Show the profile section
+    document.getElementById('profile-details').style.display = 'flex';
+    document.getElementById('username').textContent = profile?.username || 'Guest';
+    document.getElementById('job').textContent = profile?.job || 'Fitness Enthusiast';
   }
 });
 
-// Load the profile when the page is loaded
-document.addEventListener("DOMContentLoaded", loadProfile);
+window.showLogoutConfirmation = function () {
+  document.getElementById('logoutModal').style.display = 'block';
+}
+
+window.closeLogoutModal = function () {
+  document.getElementById('logoutModal').style.display = 'none';
+}
+
+window.logout = async function () {
+  await supabase.auth.signOut();
+  window.location.href = 'login.html'; // or wherever your login page is
+}
   </script>
 
 </body>
