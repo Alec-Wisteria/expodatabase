@@ -681,6 +681,36 @@ async function loadUserProfile() {
   }
 }
 
+document.addEventListener('DOMContentLoaded', async () => {
+  const { data: { user } } = await supabase.auth.getUser();
+
+  if (user) {
+    // Fetch additional profile info if stored in a 'profiles' table
+    const { data: profile } = await supabase
+      .from('profiles')
+      .select('*')
+      .eq('id', user.id)
+      .single();
+
+    // Show the profile section
+    document.getElementById('profile-details').style.display = 'flex';
+    document.getElementById('username').textContent = profile?.username || 'Guest';
+    document.getElementById('job').textContent = profile?.job || 'Fitness Enthusiast';
+  }
+});
+
+window.showLogoutConfirmation = function () {
+  document.getElementById('logoutModal').style.display = 'block';
+}
+
+window.closeLogoutModal = function () {
+  document.getElementById('logoutModal').style.display = 'none';
+}
+
+window.logout = async function () {
+  await supabase.auth.signOut();
+  window.location.href = 'login.html'; // or wherever your login page is
+}
   </script>
 
 </body>
