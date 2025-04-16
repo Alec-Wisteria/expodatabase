@@ -242,7 +242,7 @@ input {
 <body>
 <div class="container" id="container">
 	<div class="form-container sign-up-container">
-		<form id="registerForm">
+		<form class="register-form" id="registerForm">
 			<h1>Create Account</h1>
 			<div class="social-container">
 				<a href="#" class="social"><i class="fab fa-facebook-f"></i></a>
@@ -257,7 +257,7 @@ input {
 		</form>
 	</div>
 	<div class="form-container sign-in-container">
-		<form id="loginForm">
+		<form class="login-form" id="loginForm">
 			<h1>Sign in</h1>
 			<div class="social-container">
 				<a href="#" class="social"><i class="fab fa-facebook-f"></i></a>
@@ -305,6 +305,8 @@ input {
 import { signInUser, signUpUser } from './supabaseClient.js';
 
 // Login
+import { signInUser } from './supabaseClient.js';
+
 document.getElementById('loginForm').addEventListener('submit', async (e) => {
     e.preventDefault();
     const email = document.getElementById('loginEmail').value;
@@ -321,19 +323,19 @@ document.getElementById('loginForm').addEventListener('submit', async (e) => {
 
 // Sign Up
 document.getElementById('registerForm').addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const username = document.getElementById('registerUsername').value;
-    const email = document.getElementById('registerEmail').value;
-    const password = document.getElementById('registerPassword').value;
+            e.preventDefault();
+            const username = document.getElementById('registerUsername').value;
+            const email = document.getElementById('registerEmail').value;
+            const password = document.getElementById('registerPassword').value;
 
-    const success = await signUpUser(username, email, password);
-    if (success) {
-        alert('User registered! Please check your email to confirm your account.');
-        window.location.href = 'index.html';
-    } else {
-        alert('Registration failed. Please try again.');
-    }
-});
+            const success = await signUpUser('buyer', username, email, password);
+            if (success) {
+                alert('Buyer account created successfully!');
+                container.classList.remove("right-panel-active");
+            } else {
+                alert('Registration failed. Please try again.');
+            }
+        });
 </script>
 
 </body>
