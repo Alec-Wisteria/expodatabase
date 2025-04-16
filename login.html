@@ -241,7 +241,7 @@ input {
 <body>
 <div class="container" id="container">
 	<div class="form-container sign-up-container">
-		<form id="sign-up">
+		<form id="registerForm">
 			<h1>Create Account</h1>
 			<div class="social-container">
 				<a href="#" class="social"><i class="fab fa-facebook-f"></i></a>
@@ -249,14 +249,14 @@ input {
 				<a href="#" class="social"><i class="fab fa-linkedin-in"></i></a>
 			</div>
 			<span>or use your email for registration</span>
-			<input type="text" placeholder="Name" />
-			<input type="email" placeholder="Email" />
-			<input type="password" placeholder="Password" />
+			<input type="text" id="registerUsername" placeholder="Name" />
+			<input type="email" id="registerEmail" placeholder="Email" />
+			<input type="password" id="registerPassword" placeholder="Password" />
 			<button type="button" onclick="signUp()">Sign Up</button>
 		</form>
 	</div>
 	<div class="form-container sign-in-container">
-		<form id="sign-in">
+		<form id="loginForm"> 
 			<h1>Sign in</h1>
 			<div class="social-container">
 				<a href="#" class="social"><i class="fab fa-facebook-f"></i></a>
@@ -264,8 +264,8 @@ input {
 				<a href="#" class="social"><i class="fab fa-linkedin-in"></i></a>
 			</div>
 			<span>or use your account</span>
-			<input type="email" placeholder="Email" />
-			<input type="password" placeholder="Password" />
+			<input type="email" id="loginEmail" placeholder="Email" />
+			<input type="password" id="loginPassword" placeholder="Password" />
 			<a href="#">Forgot your password?</a>
 			<button type="button" onclick="signIn()">Sign In</button>
 		</form>
@@ -300,35 +300,40 @@ signInButton.addEventListener('click', () => {
 });
 </script>
 <script>
-import { signUpUser, signInUser } from './supabase.js'; // Update this path based on your project
+import { signInUser } from './supabaseClient.js';
 
-window.signUp = async () => {
-    const form = document.querySelector('#sign-up');
-    const name = form.querySelector('input[placeholder="Name"]').value;
-    const email = form.querySelector('input[placeholder="Email"]').value;
-    const password = form.querySelector('input[placeholder="Password"]').value;
-
-    const success = await signUpUser("user", name, email, password, password); // "user" as example userType
-    if (success) {
-        alert("Account created successfully!");
-    } else {
-        alert("Sign up failed. Check console for details.");
-    }
-};
-
-window.signIn = async () => {
-    const form = document.querySelector('#sign-in');
-    const email = form.querySelector('input[placeholder="Email"]').value;
-    const password = form.querySelector('input[placeholder="Password"]').value;
+//Login
+document.getElementById('loginForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const email = document.getElementById('loginEmail').value;
+    const password = document.getElementById('loginPassword').value;
 
     const success = await signInUser(email, password);
     if (success) {
-        alert("Signed in successfully!");
-        window.location.href = 'home.html';
+        alert('Login successful!');
+        window.location.href = 'index.html';
     } else {
-        alert("Login failed. Check console for details.");
+        alert('Login failed. Please check your credentials.');
     }
-};
+});
+
+//Sign up
+
+document.getElementById('registerForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const username = document.getElementById('registerUsername').value;
+            const email = document.getElementById('registerEmail').value;
+            const password = document.getElementById('registerPassword').value;
+
+            const success = await signUpUser('buyer', username, email, password);
+            if (success) {
+                alert('User registered! Please check your email to confirm your account.');
+                // Redirect to login page or home page after successful registration
+                window.location.href = 'index.html';
+            } else {
+                alert('Registration failed. Please try again.');
+            }
+        });
 </script>
 </body>
 
