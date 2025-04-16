@@ -330,9 +330,9 @@ document.getElementById('registerForm').addEventListener('submit', async (e) => 
             const username = document.getElementById('registerUsername').value;
             const email = document.getElementById('registerEmail').value;
             const password = document.getElementById('registerPassword').value;
-			const confirmPassword = document.getElementById('ConfirmPassword').value;
+			const confirmPassword = document.getElementById('confirmPassword').value;
 
-            const success = await signUpUser(username, email, password);
+            const success = await signUpUser(username, email, password, confirmPassword);
             if (success) {
                 alert('User account created successfully!');
             } else {
