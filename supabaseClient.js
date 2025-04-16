@@ -32,7 +32,12 @@ supabase.channel('public:profiles')
     .subscribe();
 
 // Function to sign up a user and insert data into profiles table
-export async function signUpUser(username, email, password) {
+export async function signUpUser(userType, username, email, password, confirmPassword) {
+    if (password !== confirmPassword) {
+        console.log("Passwords do not match");
+        return false;
+    }
+
     const { data, error } = await supabase.auth.signUp({
         email: email,
         password: password
@@ -48,7 +53,7 @@ export async function signUpUser(username, email, password) {
     const { error: insertError } = await supabase
         .from('profiles')
         .insert([
-            { id: data.user.id, username: username, email: email}
+            { id: data.user.id, username: username, email: email, user_type: userType }
         ]);
 
     if (insertError) {
